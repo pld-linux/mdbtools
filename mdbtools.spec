@@ -56,7 +56,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Summary:	Header files for mdb library
 Summary(pl):	Pliki nag³ówkowe biblioteki mdb
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}-odbc = %{version}-%{release}
 
 %description devel
 Header files for mdb library.
@@ -68,7 +69,7 @@ Pliki nag³ówkowe biblioteki mdb.
 Summary:	Static mdb library
 Summary(pl):	Statyczna biblioteka mdb
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static mdb library.
@@ -80,7 +81,7 @@ Statyczna biblioteka mdb.
 Summary:	MDB Tools ODBC driver for unixODBC
 Summary(pl):	Sterownik ODBC do MDB dla unixODBC
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	unixODBC >= 2.0.0
 
 %description odbc
@@ -93,7 +94,7 @@ Sterownik ODBC do MDB dla unixODBC.
 Summary:	gmdb2 - graphical interface for MDB Tools
 Summary(pl):	gmdb2 - graficzny interfejs do narzêdzi MDB
 Group:		Applications/Databases
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	glib2 >= 2.0.0
 Requires:	libglade2 >= 2.0.0
 Requires:	libgnomeui >= 2.0.0
