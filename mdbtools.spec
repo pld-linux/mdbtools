@@ -1,26 +1,39 @@
-Summary: Several utilities for using MS-Access .mdb files. 
-Summary(pl): Zbiór narzêdzi do baz danych  MS-Access (pliki mdb). 
-Name: mdbtools
-Version: 0.4
-Release: 0.1
-Copyright: GPL
-Group: Development/Tools
-Source0: http://download.sourceforge.net/mdbtools/%{name}-%{version}.tar.gz
-URL: http://mdbtools.sourceforge.net/
-BuildRoot:      %{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Summary:	Several utilities for using MS-Access .mdb files
+Summary(pl):	Zbiór narzêdzi do u¿ywania plików MS-Access (.mdb)
+Name:		mdbtools
+Version:	0.4
+Release:	0.1
+License:	GPL
+Group:		Development/Tools
+Source0:	http://download.sourceforge.net/mdbtools/%{name}-%{version}.tar.gz
+URL:		http://mdbtools.sourceforge.net/
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _prefix         /usr
 
-
 %description
-mdb-dump   -- simple hex dump utility for looking at mdb files
-mdb-schema -- prints DDL for the specified table
-mdb-export -- export table to CSV format
-mdb-tables -- a simple dump of table names to be used with shell scripts
-mdb-header -- generates a C header to be used in exporting mdb data to a C prog.
-mdb-parsecvs -- generates a C program given a CSV file made with mdb-export
-mdb-sql -- demo SQL engine program
+* mdb-dump - simple hex dump utility for looking at mdb files
+* mdb-schema - prints DDL for the specified table
+* mdb-export - export table to CSV format
+* mdb-tables - a simple dump of table names to be used with shell
+  scripts
+* mdb-header - generates a C header to be used in exporting mdb data
+  to a C program
+* mdb-parsecsv - generates a C program given a CSV file made with
+  mdb-export
+* mdb-sql - demo SQL engine program
 
+%description -l pl
+* mdb-dump - proste narzêdzie do robienia szesnastkowych zrzutów baz,
+  s³u¿±ce do ogl±dania plików mdb
+* mdb-schema - wypisuje DDL dla podanej tabeli
+* mdb-export - eksportuje tabelê do formatu CSV
+* mdb-tables - prosty zrzut nazw tabel do u¿ywania w skryptach pow³oki
+* mdb-header - generuje nag³ówki C, do u¿ywania przy eksportowaniu
+  danych mdb do programu w C
+* mdb-parsecsv - generuje program w C na podstawie pliki CSV
+  zrobionego przy u¿yciu mdb-export
+* mdb-sql - program demonstracyjny silnika SQL
 
 %prep
 %setup -q
@@ -40,4 +53,5 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING COPYING.LIB INSTALL README TODO NEWS
 %attr(755,root,root) %{_bindir}/*
+# really %dir???
 %dir %{_libdir}/*
