@@ -12,6 +12,8 @@ License:	LGPL (library), GPL (gmdb2)
 Group:		Development/Tools
 Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}.tar.gz
 # Source0-md5:	4a18bf96e67161101cade64526756d22
+Source1:	gmdb2.desktop
+Source2:	gmdb2.png
 Patch0:		%{name}-glib.patch
 Patch1:		%{name}-gcc34.patch
 Patch2:		%{name}-no_glib1.patch
@@ -131,6 +133,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+install -D %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}/gmdb2.desktop
+install -D %{SOURCE2} $RPM_BUILD_ROOT%{_iconsdir}/gmdb2.png
+
 %find_lang gmdb --with-gnome
 
 %clean
@@ -175,4 +180,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/gmdb2
 %{_datadir}/gmdb
+%{_desktopdir}/gmdb2.desktop
+%{_iconsdir}/gmdb2.png
 %endif
