@@ -1,6 +1,7 @@
 [Desktop Entry]
-Name=MDB tools frontend
+Name=MDB Tools
 Comment=GUI for MDB Tools
+Comment[pl]=Graficzna nakładka na MDB Tools
 Exec=gmdb2
 Type=Application
 Terminal=false
