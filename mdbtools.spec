@@ -134,7 +134,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 install -D %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}/gmdb2.desktop
-install -D %{SOURCE2} $RPM_BUILD_ROOT%{_iconsdir}/gmdb2.png
+install -D %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}/gmdb2.png
 
 %find_lang gmdb --with-gnome
 
@@ -181,5 +181,5 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/gmdb2
 %{_datadir}/gmdb
 %{_desktopdir}/gmdb2.desktop
-%{_iconsdir}/gmdb2.png
+%{_pixmapsdir}/gmdb2.png
 %endif
