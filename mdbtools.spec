@@ -1,7 +1,8 @@
 #
 # Conditional build:
-# _without_gnome	- without gui package
-#
+%bcond_without gnome	# without gui package
+%bcond_without odbc	# without odbc package
+
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl):	Zbiór narzêdzi do u¿ywania plików MS-Access (.mdb)
 Name:		mdbtools
@@ -18,11 +19,11 @@ BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	glib2-devel >= 2.0.0
-%{!?_without_gnome:BuildRequires:	libglade2-devel >= 2.0.0}
-%{!?_without_gnome:BuildRequires:	libgnomeui-devel >= 2.0.0}
+%{?with_gnome:BuildRequires:	libglade2-devel >= 2.0.0}
+%{?with_gnome:BuildRequires:	libgnomeui-devel >= 2.0.0}
 BuildRequires:	libtool
 BuildRequires:	readline-devel
-BuildRequires:	unixODBC-devel >= 2.0.0
+%{?with_odbc:BuildRequires:	unixODBC-devel >= 2.0.0}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_includedir	%{_prefix}/include/mdb
@@ -114,8 +115,8 @@ rm -f acinclude.m4
 %{__autoconf}
 %{__automake}
 %configure \
-	--enable-sql \
-	--with-unixodbc=/usr
+		--enable-sql \
+%{?with_odbc:	--with-unixodbc=/usr}
 
 %{__make}
 
@@ -155,12 +156,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libmdb*.a
 
+%if %{with odbc}
 %files odbc
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/unittest
 %attr(755,root,root) %{_libdir}/libmdbodbc.so.*.*
+%endif
 
-%if 0%{!?_without_gnome:1}
+%if %{with gnome}
 %files gui
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/gmdb2
