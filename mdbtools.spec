@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_without gnome	# without gui package
 %bcond_without odbc	# without odbc package
-
+#
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl):	Zbiór narzêdzi do u¿ywania plików MS-Access (.mdb)
 Name:		mdbtools
@@ -126,6 +126,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%find_lang gmdb --with-gnome
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -143,7 +145,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/updrow
 %attr(755,root,root) %{_libdir}/libmdb.so.*.*
 %attr(755,root,root) %{_libdir}/libmdbsql.so.*.*
-%{_mandir}/man1/*.1*
+%{_mandir}/man1/mdb-*.1*
 
 %files devel
 %defattr(644,root,root,755)
@@ -164,7 +166,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %if %{with gnome}
-%files gui
+%files gui -f gmdb.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/gmdb2
 %{_datadir}/gmdb
