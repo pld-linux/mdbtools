@@ -10,6 +10,7 @@ Release:	0.1
 License:	LGPL (library), GPL (gmdb2)
 Group:		Development/Tools
 Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}.tar.gz
+# Source0-md5:	4a18bf96e67161101cade64526756d22
 Patch0:		%{name}-glib.patch
 URL:		http://mdbtools.sourceforge.net/
 BuildRequires:	autoconf
