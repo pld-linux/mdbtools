@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=MDB tools frontend
+Comment=GUI for MDB Tools
+Exec=gmdb2
+Type=Application
+Terminal=false
+MapNotify=false
+Encoding=UTF-8
+Categories=Office;Database;GTK;GNOME;
+Icon=gmdb2
+# vi: encoding=utf-8
