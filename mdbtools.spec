@@ -13,6 +13,7 @@ Group:		Development/Tools
 Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}.tar.gz
 # Source0-md5:	4a18bf96e67161101cade64526756d22
 Patch0:		%{name}-glib.patch
+Patch1:		%{name}-gcc34.patch
 URL:		http://mdbtools.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -107,7 +108,8 @@ gmdb2 - graficzny interfejs do narzêdzi MDB.
 
 %prep
 %setup -q
-%patch -p1
+%patch0 -p1
+%patch1 -p1
 
 %build
 rm -f acinclude.m4
