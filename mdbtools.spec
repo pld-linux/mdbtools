@@ -1,15 +1,23 @@
+# TODO:
+# - move gmdb to /usr/X11R6/bin
+# - add -gnome, -lib, -devel, -static subpackages
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl):	Zbiór narzêdzi do u¿ywania plików MS-Access (.mdb)
 Name:		mdbtools
 Version:	0.4
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		Development/Tools
 Source0:	http://download.sourceforge.net/mdbtools/%{name}-%{version}.tar.gz
 URL:		http://mdbtools.sourceforge.net/
+BuildRequires:	readline-devel
+BuildRequires:	unixODBC-devel
+BuildRequires:	gnome-libs-devel
+BuildRequires:	gtk+-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _prefix         /usr
+%define		_includedir	%{_prefix}/include/mdb
 
 %description
 * mdb-dump - simple hex dump utility for looking at mdb files
@@ -39,7 +47,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %setup -q
 
 %build
-%configure2_13
+%configure2_13 \
+	--enable-sql \
+	--with-unixodbc=/usr
 %{__make}
 
 %install
@@ -52,6 +62,16 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING COPYING.LIB INSTALL README TODO NEWS
-%attr(755,root,root) %{_bindir}/*
-# really %dir???
-%dir %{_libdir}/*
+%attr(755,root,root) %{_bindir}/mdb*
+%attr(755,root,root) %{_bindir}/pr*
+%attr(755,root,root) %{_bindir}/unittest
+#files gnome
+%attr(755,root,root) %{_bindir}/gmdb
+#files lib
+%attr(755,root,root) %{_libdir}/libmdb*.so.*.*
+#files devel
+%{_includedir}
+%{_libdir}/libmdb*.so
+%{_libdir}/libmdb*.la
+#files static
+%{_libdir}/libmdb*.a
