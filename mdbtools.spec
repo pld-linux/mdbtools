@@ -6,12 +6,12 @@
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl):	Zbiór narzêdzi do u¿ywania plików MS-Access (.mdb)
 Name:		mdbtools
-Version:	0.5
+Version:	0.6pre1
 Release:	1
 License:	LGPL (library), GPL (gmdb2)
 Group:		Development/Tools
 Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}.tar.gz
-# Source0-md5:	4a18bf96e67161101cade64526756d22
+# Source0-md5:	246e8f38b2a1af1bcff60ee0da59300b
 Source1:	gmdb2.desktop
 Source2:	gmdb2.png
 Patch0:		%{name}-glib.patch
@@ -111,9 +111,9 @@ gmdb2 - graficzny interfejs do narzêdzi MDB.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+#%patch0 -p1
+#%patch1 -p1
+#%patch2 -p1
 
 %build
 rm -f acinclude.m4
