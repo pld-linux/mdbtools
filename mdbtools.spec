@@ -26,6 +26,7 @@ BuildRequires:	glib2-devel >= 2.0.0
 %{?with_gnome:BuildRequires:	libglade2-devel >= 2.0.0}
 %{?with_gnome:BuildRequires:	libgnomeui-devel >= 2.0.0}
 BuildRequires:	libtool
+BuildRequires:	pkgconfig
 BuildRequires:	readline-devel
 %{?with_odbc:BuildRequires:	unixODBC-devel >= 2.0.0}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
