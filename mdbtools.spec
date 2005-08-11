@@ -1,7 +1,7 @@
 #
 # Conditional build:
-%bcond_without gnome	# without gui package
-%bcond_without odbc	# without odbc package
+%bcond_without	gnome	# without gui package
+%bcond_without	odbc	# without odbc package
 #
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl):	Zbiór narzêdzi do u¿ywania plików MS-Access (.mdb)
