@@ -134,10 +134,12 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%if %{with gnome}
 install -D %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}/gmdb2.desktop
 install -D %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}/gmdb2.png
 
 %find_lang gmdb --with-gnome
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
