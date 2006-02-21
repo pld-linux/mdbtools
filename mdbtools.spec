@@ -16,7 +16,7 @@ Source1:	gmdb2.desktop
 Source2:	gmdb2.png
 Patch0:		%{name}-glib.patch
 Patch1:		%{name}-gcc34.patch
-Patch2:		%{name}-no_glib1.patch
+Patch2:		%{name}-link.patch
 URL:		http://mdbtools.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
