@@ -20,8 +20,9 @@
  libmdbodbc_la_LIBADD=	$(patsubst %, $(SQLDIR)/%, \
  				$(patsubst %.c, %.lo, $(SQLSOURCES))) \
  				$(patsubst %, $(MDBDIR)/%, \
- 				$(patsubst %.c, %.lo, $(MDBSOURCES))) -lglib
+-				$(patsubst %.c, %.lo, $(MDBSOURCES))) -lglib
 -LIBS	=	@LEXLIB@ `glib-config --libs`
++				$(patsubst %.c, %.lo, $(MDBSOURCES)))
 +LIBS	=	@LEXLIB@ $(GLIB_LIBS)
  unittest_LDADD	=	libmdbodbc.la ../libmdb/libmdb.la ../sql/libmdbsql.la
  
