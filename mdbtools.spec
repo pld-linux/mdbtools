@@ -62,7 +62,6 @@ Summary:	Header files for mdb library
 Summary(pl):	Pliki nag³ówkowe biblioteki mdb
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	%{name}-odbc = %{version}-%{release}
 
 %description devel
 Header files for mdb library.
@@ -134,6 +133,15 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%if %{with odbc}
+# just a test program, too generic name
+rm -f $RPM_BUILD_ROOT%{_bindir}/unittest
+# internal API
+rm -f $RPM_BUILD_ROOT%{_includedir}/{connectparams.h,mdbodbc.h}
+# this library is meant to be dlopened
+rm -f $RPM_BUILD_ROOT%{_libdir}/libmdbodbc.{la,a}
+%endif
+
 %if %{with gnome}
 install -D %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}/gmdb2.desktop
 install -D %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}/gmdb2.png
@@ -163,19 +171,23 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %doc HACKING
-%attr(755,root,root) %{_libdir}/libmdb*.so
-%{_libdir}/libmdb*.la
+%attr(755,root,root) %{_libdir}/libmdb.so
+%attr(755,root,root) %{_libdir}/libmdbsql.so
+%{_libdir}/libmdb.la
+%{_libdir}/libmdbsql.la
 %{_includedir}
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/libmdb*.a
+%{_libdir}/libmdb.a
+%{_libdir}/libmdbsql.a
 
 %if %{with odbc}
 %files odbc
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/unittest
-%attr(755,root,root) %{_libdir}/libmdbodbc.so.*.*
+%attr(755,root,root) %{_libdir}/libmdbodbc.so.*.*.*
+# for dlopening
+%attr(755,root,root) %{_libdir}/libmdbodbc.so
 %endif
 
 %if %{with gnome}
