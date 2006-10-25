@@ -1,0 +1,86 @@
+--- gmdb.h	2004-02-11 23:04:26.000000000 +0100
++++ mdbtools-0.6pre1/src/gmdb2/gmdb.h	2005-08-01 18:27:10.000000000 +0200
+@@ -24,6 +24,7 @@
+ GtkWidget *gmdb_table_def_new(MdbCatalogEntry *entry);
+ GtkWidget *gmdb_table_export_new(MdbCatalogEntry *entry);
+ void gmdb_table_export(MdbCatalogEntry *entry) ;
++gchar *gmdb_export_get_filepath(GladeXML *xml);
+ 
+ void gmdb_file_select_cb(GtkWidget *w, gpointer data);
+ void gmdb_file_open_cb(GtkWidget *w, gpointer data);
+--- info.c	2003-01-12 23:59:42.000000000 +0100
++++ mdbtools-0.6pre1/src/gmdb2/info.c	2005-08-01 19:04:14.000000000 +0200
+@@ -71,4 +71,7 @@
+ 	gtk_label_set_text(GTK_LABEL(label), tmpstr);	
+ 
+ 	g_free(filepath);
++	// a hack to avoid warning: control reaches end of non-void function
++	// the return value is nowhere used anyway
++	return NULL;
+ }
+--- table_export.c	2003-01-14 18:37:44.000000000 +0100
++++ mdbtools-0.6pre1/src/gmdb2/table_export.c	2005-08-01 19:05:50.000000000 +0200
+@@ -49,6 +49,7 @@
+ 	}
+ }
+ 
++void
+ gmdb_export_get_delimiter(GladeXML *xml, gchar *delimiter, int max_buf)
+ {
+ 	GtkWidget *combo;
+--- data.c	2004-06-11 15:56:41.000000000 +0200
++++ mdbtools-0.6pre1/src/libmdb/data.c	2005-08-01 19:11:29.000000000 +0200
+@@ -136,7 +136,7 @@
+ }
+ static int mdb_xfer_bound_ole(MdbHandle *mdb, int start, MdbColumn *col, int len)
+ {
+-int ret;
++int ret=0;
+ 	if (len) {
+ 		col->cur_value_start = start;
+ 		col->cur_value_len = len;
+--- kkd.c	2003-04-29 19:55:17.000000000 +0200
++++ mdbtools-0.6pre1/src/libmdb/kkd.c	2005-08-01 19:15:43.000000000 +0200
+@@ -55,7 +55,7 @@
+ 
+ GHashTable *mdb_get_column_def(MdbCatalogEntry *entry, int start)
+ {
+-GHashTable *hash;
++GHashTable *hash=NULL;
+ MdbHandle *mdb = entry->mdb;
+ MdbColumnProp prop;
+ int tmp, pos, col_num, val_len, i;
+--- mdbsql.c    2004-05-30 11:20:40.000000000 +0530
++++ mdbtools-0.6pre1/src/sql/mdbsql.c  2005-07-26 17:06:18.000000000 +0530
+@@ -84,7 +84,7 @@
+                return 1;
+        }
+ }
+-int mdb_run_query(MdbSQL *sql, char *query)
++int mdb_sql_run_query(MdbSQL *sql, char *query)
+ {
+        if (_parse(sql,query) && sql->cur_table) {
+                mdb_sql_bind_all(sql);
+
+--- mdbsql.h	2004-03-07 05:29:54.000000000 +0530
++++ mdbtools-0.6pre1/include/mdbsql.h	2005-07-28 18:34:51.000000000 +0530
+@@ -1,7 +1,7 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <glib.h>
+-#include <mdbtools.h>
++#include "mdbtools.h"
+ 
+ #ifndef _mdbsql_h_
+ 
+--- index.c	2004-04-16 17:45:14.000000000 +0200
++++ mdbtools-0.6pre1/src/libmdb/index.c	2005-11-28 20:14:37.000000000 +0100
+@@ -330,7 +330,7 @@
+ {
+ 	int mask_bit = 0;
+ 	int mask_pos = 0x16;
+-	int mask_byte;
++	int mask_byte = 0;
+ 	int elem = 0;
+ 	int len, start, i;
+ 
