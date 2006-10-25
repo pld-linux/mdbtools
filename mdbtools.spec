@@ -3,20 +3,22 @@
 %bcond_without	gnome	# without gui package
 %bcond_without	odbc	# without odbc package
 #
+%define 	pre	pre1
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl):	Zbiór narzêdzi do u¿ywania plików MS-Access (.mdb)
 Name:		mdbtools
-Version:	0.5
-Release:	3
+Version:	0.6
+Release:	0.%{pre}.1
 License:	LGPL (library), GPL (gmdb2)
 Group:		Development/Tools
-Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}.tar.gz
-# Source0-md5:	4a18bf96e67161101cade64526756d22
+Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}%{pre}.tar.gz
+# Source0-md5:	246e8f38b2a1af1bcff60ee0da59300b
 Source1:	gmdb2.desktop
 Source2:	gmdb2.png
-Patch0:		%{name}-glib.patch
-Patch1:		%{name}-gcc34.patch
+Patch0:		%{name}-compile_fix.patch
+Patch1:		%{name}-oo_fixes.patch
 Patch2:		%{name}-link.patch
+Patch3:		%{name}-as_needed.patch
 URL:		http://mdbtools.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -110,10 +112,11 @@ gmdb2 - graphical interface for MDB Tools.
 gmdb2 - graficzny interfejs do narzêdzi MDB.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}%{pre}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 rm -f acinclude.m4
@@ -176,6 +179,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libmdb.la
 %{_libdir}/libmdbsql.la
 %{_includedir}
+%{_pkgconfigdir}/*.pc
 
 %files static
 %defattr(644,root,root,755)
