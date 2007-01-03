@@ -3,12 +3,13 @@
 %bcond_without	gnome	# without gui package
 %bcond_without	odbc	# without odbc package
 #
-%define 	pre	pre1
+%define 	pre		pre1
+%define		_rel	3
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl):	Zbiór narzêdzi do u¿ywania plików MS-Access (.mdb)
 Name:		mdbtools
 Version:	0.6
-Release:	0.%{pre}.1
+Release:	0.%{pre}.%{_rel}
 License:	LGPL (library), GPL (gmdb2)
 Group:		Development/Tools
 Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}%{pre}.tar.gz
@@ -31,39 +32,48 @@ BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	readline-devel
 %{?with_odbc:BuildRequires:	unixODBC-devel >= 2.0.0}
+Requires:	%{name}-libs = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_includedir	%{_prefix}/include/mdb
 
 %description
-* mdb-dump - simple hex dump utility for looking at mdb files
-* mdb-schema - prints DDL for the specified table
-* mdb-export - export table to CSV format
-* mdb-tables - a simple dump of table names to be used with shell
+- mdb-dump - simple hex dump utility for looking at mdb files
+- mdb-schema - prints DDL for the specified table
+- mdb-export - export table to CSV format
+- mdb-tables - a simple dump of table names to be used with shell
   scripts
-* mdb-header - generates a C header to be used in exporting mdb data
+- mdb-header - generates a C header to be used in exporting mdb data
   to a C program
-* mdb-parsecsv - generates a C program given a CSV file made with
+- mdb-parsecsv - generates a C program given a CSV file made with
   mdb-export
-* mdb-sql - demo SQL engine program
+- mdb-sql - demo SQL engine program
 
 %description -l pl
-* mdb-dump - proste narzêdzie do robienia szesnastkowych zrzutów baz,
+- mdb-dump - proste narzêdzie do robienia szesnastkowych zrzutów baz,
   s³u¿±ce do ogl±dania plików mdb
-* mdb-schema - wypisuje DDL dla podanej tabeli
-* mdb-export - eksportuje tabelê do formatu CSV
-* mdb-tables - prosty zrzut nazw tabel do u¿ywania w skryptach pow³oki
-* mdb-header - generuje nag³ówki C, do u¿ywania przy eksportowaniu
+- mdb-schema - wypisuje DDL dla podanej tabeli
+- mdb-export - eksportuje tabelê do formatu CSV
+- mdb-tables - prosty zrzut nazw tabel do u¿ywania w skryptach pow³oki
+- mdb-header - generuje nag³ówki C, do u¿ywania przy eksportowaniu
   danych mdb do programu w C
-* mdb-parsecsv - generuje program w C na podstawie pliki CSV
+- mdb-parsecsv - generuje program w C na podstawie pliki CSV
   zrobionego przy u¿yciu mdb-export
-* mdb-sql - program demonstracyjny silnika SQL
+- mdb-sql - program demonstracyjny silnika SQL
+
+%package libs
+Summary:	shared libraries for mdbtools
+Group:		Libraries
+Conflicts:	mdbtools < 0.6-0.pre1.3
+
+%description libs
+Shared libraries for mdbtools.
 
 %package devel
 Summary:	Header files for mdb library
 Summary(pl):	Pliki nag³ówkowe biblioteki mdb
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 
 %description devel
 Header files for mdb library.
@@ -125,8 +135,8 @@ rm -f acinclude.m4
 %{__autoconf}
 %{__automake}
 %configure \
-		--enable-sql \
-%{?with_odbc:	--with-unixodbc=/usr}
+	--enable-sql \
+	%{?with_odbc:--with-unixodbc=/usr}
 
 %{__make}
 
@@ -155,8 +165,8 @@ install -D %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}/gmdb2.png
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %post	odbc -p /sbin/ldconfig
 %postun	odbc -p /sbin/ldconfig
@@ -167,9 +177,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/mdb-*
 %attr(755,root,root) %{_bindir}/pr*
 %attr(755,root,root) %{_bindir}/updrow
+%{_mandir}/man1/mdb-*.1*
+
+%files libs
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmdb.so.*.*
 %attr(755,root,root) %{_libdir}/libmdbsql.so.*.*
-%{_mandir}/man1/mdb-*.1*
 
 %files devel
 %defattr(644,root,root,755)
