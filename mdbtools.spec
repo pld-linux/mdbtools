@@ -62,12 +62,16 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 - mdb-sql - program demonstracyjny silnika SQL
 
 %package libs
-Summary:	shared libraries for mdbtools
+Summary:	Shared libraries for mdbtools
+Summary(pl):	Biblioteki wspó³dzielone mdbtools
 Group:		Libraries
 Conflicts:	mdbtools < 0.6-0.pre1.3
 
 %description libs
 Shared libraries for mdbtools.
+
+%description libs -l pl
+Biblioteki wspó³dzielone mdbtools.
 
 %package devel
 Summary:	Header files for mdb library
