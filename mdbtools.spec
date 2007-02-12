@@ -4,7 +4,7 @@
 %bcond_without odbc	# without odbc package
 #
 Summary:	Several utilities for using MS-Access .mdb files
-Summary(pl):	Zbiór narzêdzi do u¿ywania plików MS-Access (.mdb)
+Summary(pl.UTF-8):   ZbiÃ³r narzÄ™dzi do uÅ¼ywania plikÃ³w MS-Access (.mdb)
 Name:		mdbtools
 Version:	0.5
 Release:	1
@@ -44,21 +44,21 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
   mdb-export
 * mdb-sql - demo SQL engine program
 
-%description -l pl
-* mdb-dump - proste narzêdzie do robienia szesnastkowych zrzutów baz,
-  s³u¿±ce do ogl±dania plików mdb
+%description -l pl.UTF-8
+* mdb-dump - proste narzÄ™dzie do robienia szesnastkowych zrzutÃ³w baz,
+  sÅ‚uÅ¼Ä…ce do oglÄ…dania plikÃ³w mdb
 * mdb-schema - wypisuje DDL dla podanej tabeli
-* mdb-export - eksportuje tabelê do formatu CSV
-* mdb-tables - prosty zrzut nazw tabel do u¿ywania w skryptach pow³oki
-* mdb-header - generuje nag³ówki C, do u¿ywania przy eksportowaniu
+* mdb-export - eksportuje tabelÄ™ do formatu CSV
+* mdb-tables - prosty zrzut nazw tabel do uÅ¼ywania w skryptach powÅ‚oki
+* mdb-header - generuje nagÅ‚Ã³wki C, do uÅ¼ywania przy eksportowaniu
   danych mdb do programu w C
 * mdb-parsecsv - generuje program w C na podstawie pliki CSV
-  zrobionego przy u¿yciu mdb-export
+  zrobionego przy uÅ¼yciu mdb-export
 * mdb-sql - program demonstracyjny silnika SQL
 
 %package devel
 Summary:	Header files for mdb library
-Summary(pl):	Pliki nag³ówkowe biblioteki mdb
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe biblioteki mdb
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	%{name}-odbc = %{version}-%{release}
@@ -66,24 +66,24 @@ Requires:	%{name}-odbc = %{version}-%{release}
 %description devel
 Header files for mdb library.
 
-%description devel -l pl
-Pliki nag³ówkowe biblioteki mdb.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe biblioteki mdb.
 
 %package static
 Summary:	Static mdb library
-Summary(pl):	Statyczna biblioteka mdb
+Summary(pl.UTF-8):   Statyczna biblioteka mdb
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static mdb library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna biblioteka mdb.
 
 %package odbc
 Summary:	MDB Tools ODBC driver for unixODBC
-Summary(pl):	Sterownik ODBC do MDB dla unixODBC
+Summary(pl.UTF-8):   Sterownik ODBC do MDB dla unixODBC
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	unixODBC >= 2.0.0
@@ -91,12 +91,12 @@ Requires:	unixODBC >= 2.0.0
 %description odbc
 MDB Tools ODBC driver for unixODBC.
 
-%description odbc -l pl
+%description odbc -l pl.UTF-8
 Sterownik ODBC do MDB dla unixODBC.
 
 %package gui
 Summary:	gmdb2 - graphical interface for MDB Tools
-Summary(pl):	gmdb2 - graficzny interfejs do narzêdzi MDB
+Summary(pl.UTF-8):   gmdb2 - graficzny interfejs do narzÄ™dzi MDB
 Group:		Applications/Databases
 Requires:	%{name} = %{version}-%{release}
 Requires:	glib2 >= 2.0.0
@@ -106,8 +106,8 @@ Requires:	libgnomeui >= 2.0.0
 %description gui
 gmdb2 - graphical interface for MDB Tools.
 
-%description gui -l pl
-gmdb2 - graficzny interfejs do narzêdzi MDB.
+%description gui -l pl.UTF-8
+gmdb2 - graficzny interfejs do narzÄ™dzi MDB.
 
 %prep
 %setup -q
