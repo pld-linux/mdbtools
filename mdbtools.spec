@@ -6,7 +6,7 @@
 %define 	pre		pre1
 %define		_rel	3
 Summary:	Several utilities for using MS-Access .mdb files
-Summary(pl.UTF-8):   Zbiór narzędzi do używania plików MS-Access (.mdb)
+Summary(pl.UTF-8):	Zbiór narzędzi do używania plików MS-Access (.mdb)
 Name:		mdbtools
 Version:	0.6
 Release:	0.%{pre}.%{_rel}
@@ -63,7 +63,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %package libs
 Summary:	Shared libraries for mdbtools
-Summary(pl.UTF-8):   Biblioteki współdzielone mdbtools
+Summary(pl.UTF-8):	Biblioteki współdzielone mdbtools
 Group:		Libraries
 Conflicts:	mdbtools < 0.6-0.pre1.3
 
@@ -75,7 +75,7 @@ Biblioteki współdzielone mdbtools.
 
 %package devel
 Summary:	Header files for mdb library
-Summary(pl.UTF-8):   Pliki nagłówkowe biblioteki mdb
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki mdb
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 
@@ -87,7 +87,7 @@ Pliki nagłówkowe biblioteki mdb.
 
 %package static
 Summary:	Static mdb library
-Summary(pl.UTF-8):   Statyczna biblioteka mdb
+Summary(pl.UTF-8):	Statyczna biblioteka mdb
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
@@ -99,7 +99,7 @@ Statyczna biblioteka mdb.
 
 %package odbc
 Summary:	MDB Tools ODBC driver for unixODBC
-Summary(pl.UTF-8):   Sterownik ODBC do MDB dla unixODBC
+Summary(pl.UTF-8):	Sterownik ODBC do MDB dla unixODBC
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	unixODBC >= 2.0.0
@@ -112,7 +112,7 @@ Sterownik ODBC do MDB dla unixODBC.
 
 %package gui
 Summary:	gmdb2 - graphical interface for MDB Tools
-Summary(pl.UTF-8):   gmdb2 - graficzny interfejs do narzędzi MDB
+Summary(pl.UTF-8):	gmdb2 - graficzny interfejs do narzędzi MDB
 Group:		Applications/Databases
 Requires:	%{name} = %{version}-%{release}
 Requires:	glib2 >= 2.0.0
