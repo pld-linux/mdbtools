@@ -4,7 +4,7 @@
 %bcond_without	odbc	# without odbc package
 #
 %define 	pre		pre1
-%define		_rel	3
+%define		_rel	4
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl.UTF-8):	Zbiór narzędzi do używania plików MS-Access (.mdb)
 Name:		mdbtools
