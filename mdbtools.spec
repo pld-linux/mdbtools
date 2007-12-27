@@ -4,12 +4,12 @@
 %bcond_without	odbc	# without odbc package
 #
 %define 	pre		pre1
-%define		_rel	4
+%define		rel	5
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl.UTF-8):	Zbiór narzędzi do używania plików MS-Access (.mdb)
 Name:		mdbtools
 Version:	0.6
-Release:	0.%{pre}.%{_rel}
+Release:	0.%{pre}.%{rel}
 License:	LGPL (library), GPL (gmdb2)
 Group:		Development/Tools
 Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}%{pre}.tar.gz
