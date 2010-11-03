@@ -4,7 +4,7 @@
 %bcond_without	odbc	# without odbc package
 #
 %define 	pre		pre1
-%define		rel	6
+%define		rel	7
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl.UTF-8):	Zbiór narzędzi do używania plików MS-Access (.mdb)
 Name:		mdbtools
@@ -20,6 +20,7 @@ Patch0:		%{name}-compile_fix.patch
 Patch1:		%{name}-oo_fixes.patch
 Patch2:		%{name}-link.patch
 Patch3:		%{name}-as_needed.patch
+Patch4:		%{name}-pc.patch
 URL:		http://mdbtools.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -131,6 +132,7 @@ gmdb2 - graficzny interfejs do narzędzi MDB.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 rm -f acinclude.m4
@@ -142,7 +144,7 @@ rm -f acinclude.m4
 	--enable-sql \
 	%{?with_odbc:--with-unixodbc=/usr}
 
-%{__make}
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -186,7 +188,9 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmdb.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libmdb.so.0
 %attr(755,root,root) %{_libdir}/libmdbsql.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libmdbsql.so.0
 
 %files devel
 %defattr(644,root,root,755)
@@ -207,6 +211,7 @@ rm -rf $RPM_BUILD_ROOT
 %files odbc
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmdbodbc.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libmdbodbc.so.0
 # for dlopening
 %attr(755,root,root) %{_libdir}/libmdbodbc.so
 %endif
