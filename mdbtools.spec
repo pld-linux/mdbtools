@@ -3,24 +3,29 @@
 %bcond_without	gnome	# without gui package
 %bcond_without	odbc	# without odbc package
 #
-%define 	pre		pre1
+%define 	pre		pre2
 %define		rel	7
+%define		snap	20050624
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl.UTF-8):	Zbiór narzędzi do używania plików MS-Access (.mdb)
 Name:		mdbtools
 Version:	0.6
-Release:	0.%{pre}.%{rel}
+Release:	0.%{pre}.%{rel}cvs%{snap}
 License:	LGPL (library), GPL (gmdb2)
 Group:		Development/Tools
-Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}%{pre}.tar.gz
-# Source0-md5:	246e8f38b2a1af1bcff60ee0da59300b
+#Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}%{pre}.tar.gz
+Source0:	http://distfiles.gentoo.org/distfiles/%{name}-cvs-%{snap}.tar.gz
+# Source0-md5:	875872ed64c4826c23d0ba5b63f5c489
 Source1:	gmdb2.desktop
 Source2:	gmdb2.png
-Patch0:		%{name}-compile_fix.patch
-Patch1:		%{name}-oo_fixes.patch
-Patch2:		%{name}-link.patch
-Patch3:		%{name}-as_needed.patch
-Patch4:		%{name}-pc.patch
+Patch0:		%{name}-gcc34.patch
+Patch1:		%{name}-link.patch
+Patch2:		%{name}-as_needed.patch
+Patch3:		%{name}-pc.patch
+Patch4:		%{name}-haveiconv_fix.patch
+Patch5:		%{name}-parallel_make.patch
+Patch6:		%{name}-odbc_definitions.patch
+
 URL:		http://mdbtools.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -127,15 +132,19 @@ gmdb2 - graphical interface for MDB Tools.
 gmdb2 - graficzny interfejs do narzędzi MDB.
 
 %prep
-%setup -q -n %{name}-%{version}%{pre}
-%patch0 -p1
+%setup -q -n %{name}-cvs-%{snap}
+%patch0 -p0
 %patch1 -p1
-%patch2 -p1
+%patch2 -p0
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
 
 %build
 rm -f acinclude.m4
+touch config.rpath
+%{__autoheader}
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
@@ -181,16 +190,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO doc/faq.html
 %attr(755,root,root) %{_bindir}/mdb-*
-%attr(755,root,root) %{_bindir}/pr*
-%attr(755,root,root) %{_bindir}/updrow
 %{_mandir}/man1/mdb-*.1*
 
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmdb.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/libmdb.so.0
+%attr(755,root,root) %ghost %{_libdir}/libmdb.so.1
 %attr(755,root,root) %{_libdir}/libmdbsql.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/libmdbsql.so.0
+%attr(755,root,root) %ghost %{_libdir}/libmdbsql.so.1
 
 %files devel
 %defattr(644,root,root,755)
