@@ -3,40 +3,32 @@
 %bcond_without	gnome	# without gui package
 %bcond_without	odbc	# without odbc package
 #
-%define 	pre		pre2
-%define		rel	8
-%define		snap	20050624
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl.UTF-8):	Zbiór narzędzi do używania plików MS-Access (.mdb)
 Name:		mdbtools
-Version:	0.6
-Release:	0.%{pre}.%{rel}cvs%{snap}
-License:	LGPL (library), GPL (gmdb2)
+Version:	0.7.1
+Release:	1
+License:	LGPL v2+ (library), GPL v2+ (gmdb2)
 Group:		Development/Tools
-#Source0:	http://dl.sourceforge.net/mdbtools/%{name}-%{version}%{pre}.tar.gz
-Source0:	http://distfiles.gentoo.org/distfiles/%{name}-cvs-%{snap}.tar.gz
-# Source0-md5:	875872ed64c4826c23d0ba5b63f5c489
+Source0:	https://github.com/brianb/mdbtools/archive/0.7.1/%{name}-%{version}.tar.gz
+# Source0-md5:	477c7af98e75f8e6c987b020d6a822d8
 Source1:	gmdb2.desktop
 Source2:	gmdb2.png
-Patch0:		%{name}-gcc34.patch
-Patch1:		%{name}-link.patch
-Patch2:		%{name}-as_needed.patch
-Patch3:		%{name}-pc.patch
-Patch4:		%{name}-haveiconv_fix.patch
-Patch5:		%{name}-parallel_make.patch
-Patch6:		%{name}-odbc_definitions.patch
-
+Patch0:		%{name}-pc.patch
+Patch1:		%{name}-parallel_make.patch
 URL:		http://mdbtools.sourceforge.net/
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	glib2-devel >= 2.0.0
+%{?with_gnome:BuildRequires:	gtk+2-devel >= 2:2.14}
 %{?with_gnome:BuildRequires:	libglade2-devel >= 2.0.0}
 %{?with_gnome:BuildRequires:	libgnomeui-devel >= 2.0.0}
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2
 BuildRequires:	pkgconfig
 BuildRequires:	readline-devel
+BuildRequires:	txt2man
 %{?with_odbc:BuildRequires:	unixODBC-devel >= 2.0.0}
 Requires:	%{name}-libs = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -121,7 +113,7 @@ Summary:	gmdb2 - graphical interface for MDB Tools
 Summary(pl.UTF-8):	gmdb2 - graficzny interfejs do narzędzi MDB
 Group:		Applications/Databases
 Requires:	%{name} = %{version}-%{release}
-Requires:	glib2 >= 2.0.0
+Requires:	gtk+2 >= 2:2.14
 Requires:	libglade2 >= 2.0.0
 Requires:	libgnomeui >= 2.0.0
 
@@ -132,24 +124,17 @@ gmdb2 - graphical interface for MDB Tools.
 gmdb2 - graficzny interfejs do narzędzi MDB.
 
 %prep
-%setup -q -n %{name}-cvs-%{snap}
-%patch0 -p0
-%patch1 -p1
-%patch2 -p0
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
+%setup -q
+%patch0 -p1
+#patch1 -p1
 
 %build
-rm -f acinclude.m4
-touch config.rpath
-%{__autoheader}
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
 %{__automake}
 %configure \
+	--disable-silent-rules \
 	--enable-sql \
 	%{?with_odbc:--with-unixodbc=/usr}
 
@@ -161,13 +146,12 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/{libmdb,libmdbsql}.la
+
 %if %{with odbc}
-# just a test program, too generic name
-rm -f $RPM_BUILD_ROOT%{_bindir}/unittest
-# internal API
-rm -f $RPM_BUILD_ROOT%{_includedir}/{connectparams.h,mdbodbc.h}
-# this library is meant to be dlopened
-rm -f $RPM_BUILD_ROOT%{_libdir}/libmdbodbc.{la,a}
+# ODBC libraries are meant to be dlopened
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libmdbodbc*.{la,a}
 %endif
 
 %if %{with gnome}
@@ -175,6 +159,8 @@ install -D %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}/gmdb2.desktop
 install -D %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}/gmdb2.png
 
 %find_lang gmdb --with-gnome
+%else
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man1/gmdb2.1
 %endif
 
 %clean
@@ -195,19 +181,18 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmdb.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/libmdb.so.1
+%attr(755,root,root) %ghost %{_libdir}/libmdb.so.2
 %attr(755,root,root) %{_libdir}/libmdbsql.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/libmdbsql.so.1
+%attr(755,root,root) %ghost %{_libdir}/libmdbsql.so.2
 
 %files devel
 %defattr(644,root,root,755)
 %doc HACKING
 %attr(755,root,root) %{_libdir}/libmdb.so
 %attr(755,root,root) %{_libdir}/libmdbsql.so
-%{_libdir}/libmdb.la
-%{_libdir}/libmdbsql.la
 %{_includedir}
-%{_pkgconfigdir}/*.pc
+%{_pkgconfigdir}/libmdb.pc
+%{_pkgconfigdir}/libmdbsql.pc
 
 %files static
 %defattr(644,root,root,755)
@@ -217,10 +202,8 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with odbc}
 %files odbc
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libmdbodbc.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libmdbodbc.so.0
-# for dlopening
 %attr(755,root,root) %{_libdir}/libmdbodbc.so
+%attr(755,root,root) %{_libdir}/libmdbodbcW.so
 %endif
 
 %if %{with gnome}
