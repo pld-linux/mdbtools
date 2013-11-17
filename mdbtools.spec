@@ -15,7 +15,6 @@ Source0:	https://github.com/brianb/mdbtools/archive/0.7.1/%{name}-%{version}.tar
 Source1:	gmdb2.desktop
 Source2:	gmdb2.png
 Patch0:		%{name}-pc.patch
-Patch1:		%{name}-parallel_make.patch
 URL:		http://mdbtools.sourceforge.net/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -126,7 +125,6 @@ gmdb2 - graficzny interfejs do narzędzi MDB.
 %prep
 %setup -q
 %patch0 -p1
-#patch1 -p1
 
 %build
 %{__libtoolize}
@@ -158,7 +156,7 @@ rm -rf $RPM_BUILD_ROOT
 install -D %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}/gmdb2.desktop
 install -D %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}/gmdb2.png
 
-%find_lang gmdb --with-gnome
+%find_lang gmdb --with-gnome --with-omf
 %else
 %{__rm} $RPM_BUILD_ROOT%{_mandir}/man1/gmdb2.1
 %endif
@@ -213,4 +211,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gmdb
 %{_desktopdir}/gmdb2.desktop
 %{_pixmapsdir}/gmdb2.png
+%{_mandir}/man1/gmdb2.1*
 %endif
