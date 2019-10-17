@@ -7,7 +7,7 @@ Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl.UTF-8):	Zbiór narzędzi do używania plików MS-Access (.mdb)
 Name:		mdbtools
 Version:	0.7.1
-Release:	3
+Release:	4
 License:	LGPL v2+ (library), GPL v2+ (gmdb2)
 Group:		Development/Tools
 Source0:	https://github.com/brianb/mdbtools/archive/0.7.1/%{name}-%{version}.tar.gz
