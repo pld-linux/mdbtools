@@ -1,32 +1,28 @@
 #
 # Conditional build:
-%bcond_without	gnome	# without gui package
-%bcond_without	odbc	# without odbc package
+%bcond_without	odbc	# ODBC driver
 #
 Summary:	Several utilities for using MS-Access .mdb files
 Summary(pl.UTF-8):	Zbiór narzędzi do używania plików MS-Access (.mdb)
 Name:		mdbtools
-Version:	0.7.1
-Release:	4
+Version:	1.0.0
+Release:	1
 License:	LGPL v2+ (library), GPL v2+ (gmdb2)
 Group:		Development/Tools
-Source0:	https://github.com/brianb/mdbtools/archive/0.7.1/%{name}-%{version}.tar.gz
-# Source0-md5:	477c7af98e75f8e6c987b020d6a822d8
-Source1:	gmdb2.desktop
-Source2:	gmdb2.png
-Patch0:		%{name}-pc.patch
+#Source0Download: https://github.com/mdbtools/mdbtools/releases
+Source0:	https://github.com/brianb/mdbtools/releases/download/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	9925e13cc70f3693c1e358da8ea750e5
+Patch0:		%{name}-odbc-dir.patch
 URL:		http://mdbtools.sourceforge.net/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
-BuildRequires:	bison
+BuildRequires:	bison >= 3
 BuildRequires:	flex
 BuildRequires:	glib2-devel >= 2.0.0
-%{?with_gnome:BuildRequires:	gtk+2-devel >= 2:2.14}
-%{?with_gnome:BuildRequires:	libglade2-devel >= 2.0.0}
-%{?with_gnome:BuildRequires:	libgnomeui-devel >= 2.0.0}
 BuildRequires:	libtool >= 2:2
 BuildRequires:	pkgconfig
 BuildRequires:	readline-devel
+BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	txt2man
 %{?with_odbc:BuildRequires:	unixODBC-devel >= 2.0.0}
 Requires:	%{name}-libs = %{version}-%{release}
@@ -107,21 +103,6 @@ MDB Tools ODBC driver for unixODBC.
 %description odbc -l pl.UTF-8
 Sterownik ODBC do MDB dla unixODBC.
 
-%package gui
-Summary:	gmdb2 - graphical interface for MDB Tools
-Summary(pl.UTF-8):	gmdb2 - graficzny interfejs do narzędzi MDB
-Group:		Applications/Databases
-Requires:	%{name} = %{version}-%{release}
-Requires:	gtk+2 >= 2:2.14
-Requires:	libglade2 >= 2.0.0
-Requires:	libgnomeui >= 2.0.0
-
-%description gui
-gmdb2 - graphical interface for MDB Tools.
-
-%description gui -l pl.UTF-8
-gmdb2 - graficzny interfejs do narzędzi MDB.
-
 %prep
 %setup -q
 %patch0 -p1
@@ -134,6 +115,7 @@ gmdb2 - graficzny interfejs do narzędzi MDB.
 %configure \
 	--disable-silent-rules \
 	--enable-sql \
+	--with-bash-completion-dir=%{bash_compdir} \
 	%{?with_odbc:--with-unixodbc=/usr}
 
 %{__make} -j1
@@ -152,15 +134,6 @@ rm -rf $RPM_BUILD_ROOT
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libmdbodbc*.{la,a}
 %endif
 
-%if %{with gnome}
-install -D %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}/gmdb2.desktop
-install -D %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}/gmdb2.png
-
-%find_lang gmdb --with-gnome --with-omf
-%else
-%{__rm} $RPM_BUILD_ROOT%{_mandir}/man1/gmdb2.1
-%endif
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -172,20 +145,21 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README TODO doc/faq.html
+%doc AUTHORS NEWS README.md
 %attr(755,root,root) %{_bindir}/mdb-*
 %{_mandir}/man1/mdb-*.1*
+%{bash_compdir}/mdb-*
 
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmdb.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/libmdb.so.2
+%attr(755,root,root) %ghost %{_libdir}/libmdb.so.3
 %attr(755,root,root) %{_libdir}/libmdbsql.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/libmdbsql.so.2
+%attr(755,root,root) %ghost %{_libdir}/libmdbsql.so.3
 
 %files devel
 %defattr(644,root,root,755)
-%doc HACKING
+%doc HACKING.md
 %attr(755,root,root) %{_libdir}/libmdb.so
 %attr(755,root,root) %{_libdir}/libmdbsql.so
 %{_includedir}
@@ -202,14 +176,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmdbodbc.so
 %attr(755,root,root) %{_libdir}/libmdbodbcW.so
-%endif
-
-%if %{with gnome}
-%files gui -f gmdb.lang
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/gmdb2
-%{_datadir}/gmdb
-%{_desktopdir}/gmdb2.desktop
-%{_pixmapsdir}/gmdb2.png
-%{_mandir}/man1/gmdb2.1*
 %endif
